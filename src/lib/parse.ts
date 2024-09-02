@@ -9,8 +9,6 @@ function parse(text: string): ChordedLyrics {
             let match = regex.exec(line);
             let chords: Chord[] = [];
             let offset = 0;
-    
-            console.log("scanning " + line + " on index " + index)
 
             while (match) {
                 if (match[1]) {
