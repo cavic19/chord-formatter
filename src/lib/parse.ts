@@ -12,8 +12,6 @@ function parse(text: string): ChordedLyrics {
 
             while (match) {
                 if (match[1]) {
-                    console.log("Found match " + match)
-
                     chords.push({
                         x: match.index - offset,
                         y: index,
