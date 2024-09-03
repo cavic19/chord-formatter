@@ -7,17 +7,17 @@ import { matchAll, toLines } from "../lib/util";
  */
 function parseHTML(htmlString: string): ChordedLyrics {
     const preRegex = /<pre>((?:.|\s)*)<\/pre>/;
-    const lyrics = preRegex.exec(htmlString)[1].trim();
+    const lyrics = preRegex.exec(htmlString)?.[1]?.trim() ?? "";
     if (lyrics.length == 0) {
-    return {
-        chords: [],
-        lyrics: []
-    }
+        return {
+            chords: [],
+            lyrics: []
+        }
     }
 
     const x = lyrics.replace(/<el.*?>|<\/el>/g, "");
     const chords: Chord[] = [];
-    const lines: {i: number, line: string}[] = [];
+    const lines: { i: number, line: string }[] = [];
 
     const chordRegex = /<span.+?class="akord".*?>|<\/span>/g;
 
