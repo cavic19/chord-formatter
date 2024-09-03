@@ -1,6 +1,5 @@
 import * as fs from 'fs';
-import { renderHTML } from '../lib/render';
-import parse from '../lib/parse';
+import SimpleHTMLRenderer from '../lib/SimpleHTMLRenderer';
 
 test.skip('should first', () => { 
     const compact = `
@@ -9,7 +8,7 @@ test.skip('should first', () => {
         Bu<[F]>t darling when I <[Dm]>hold you
         Don't you know I feel the <[C]>same
     `;
-    const html = renderHTML(parse(compact));
+    const html = new SimpleHTMLRenderer("color:red;").renderHTMLFromString(compact);
 
     fs.writeFileSync(__dirname + '/../../index.html', html);
  })

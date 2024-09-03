@@ -1,15 +1,24 @@
-import { parse } from "../lib/parse"
+import ChordEncoder from "../lib/ChordEncoder";
 import { ChordedLyrics } from "../lib/types";
 
 describe("parse", () => {
-    it("should parse as expected", () => {
-        const text = `
-        <[F]>When I look into your <[Dm]>eyes
-        I can see a love res<[C]>trained
-        Bu<[F]>t darling when I <[Dm]>hold you
-        Don't you know I feel the <[C]>same
-    `;
+    const encoded = `<[F]>When I look into your <[Dm]>eyes
+I can see a love res<[C]>trained
+Bu<[F]>t darling when I <[Dm]>hold you
+Don't you know I feel the <[C]>same`;
 
+    it("encode(decode(string)) === string", () => {
+        const encoder = new ChordEncoder();
+
+        const actualReEncoded = encoder.encode(encoder.decode(encoded));
+
+        console.log("ACT", actualReEncoded);
+        console.log("EXP", encoded);
+
+        expect(actualReEncoded).toEqual(encoded);
+    });
+
+    it("should parse as expected", () => {
         const expected: ChordedLyrics = {
             chords: [
                 {
@@ -50,9 +59,10 @@ describe("parse", () => {
                 "Don't you know I feel the same"
             ]
         }
+        const encoder = new ChordEncoder();
 
-        const actual = parse(text)
+        const actual = encoder.decode(encoded);
 
-        expect(expected).toEqual(actual)
+        expect(actual).toEqual(expected);
     });
 });
