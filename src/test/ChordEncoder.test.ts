@@ -1,6 +1,6 @@
+import AnnotatedLyrics from "../lib/AnnotatedLyrics";
 import Chord from "../lib/Chord";
 import ChordEncoder from "../lib/ChordEncoder";
-import { AnnotatedLyrics } from "../lib/types";
 describe("parse", () => {
     const encoded = `<[F]>When I look into your <[Dm]>eyes
 I can see a love res<[C]>trained
@@ -16,8 +16,14 @@ Don't you know I feel the <[C]>same`;
     });
 
     it("should parse as expected", () => {
-        const expected: AnnotatedLyrics = {
-            annotations: [
+        const expected: AnnotatedLyrics = new AnnotatedLyrics(
+            [
+                "When I look into your eyes",
+                "I can see a love restrained",
+                "But darling when I hold you",
+                "Don't you know I feel the same"
+            ],
+            [
                 {
                     letterIndex: 0,
                     lineIndex: 0,
@@ -48,14 +54,8 @@ Don't you know I feel the <[C]>same`;
                     lineIndex: 3,
                     note: Chord.parse("C")!
                 }
-            ],
-            lyrics: [
-                "When I look into your eyes",
-                "I can see a love restrained",
-                "But darling when I hold you",
-                "Don't you know I feel the same"
             ]
-        }
+        )
         const encoder = new ChordEncoder();
 
         const actual = encoder.decode(encoded);

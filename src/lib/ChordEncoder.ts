@@ -1,5 +1,6 @@
+import AnnotatedLyrics from "./AnnotatedLyrics";
 import Chord from "./Chord";
-import { Annotation, AnnotatedLyrics } from "./types";
+import { Annotation } from "./types";
 import { insertAt, matchAll, toLines, unzip } from "./util";
 
 
@@ -33,10 +34,7 @@ class ChordEncoder {
                 return { first: annotations, second: cleansedLine };
             })
         );
-        return {
-            lyrics: second,
-            annotations: first.flat()
-        };
+        return new AnnotatedLyrics(second, first.flat());
     }
 
 

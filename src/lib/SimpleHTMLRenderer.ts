@@ -1,5 +1,6 @@
+import AnnotatedLyrics from "./AnnotatedLyrics";
 import ChordEncoder from "./ChordEncoder";
-import { AnnotatedLyrics } from "./types";
+
 import { emptyString } from "./util";
 
 /**

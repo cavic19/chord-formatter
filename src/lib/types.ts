@@ -10,12 +10,6 @@ export type Annotation = {
 };
 
 
-
-export type AnnotatedLyrics = {
-    lyrics: string[]
-    annotations: Annotation[]
-};
-
 export type Pair<A, B> = {
     first: A, 
     second: B

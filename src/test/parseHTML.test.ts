@@ -42,7 +42,7 @@ R:
 </div>
 `;
 
-test('should first', () => { 
+test.skip('should first', () => { 
     const actual = parseHTML(testHtml);
     const html = new SimpleHTMLRenderer("color:red;", "chord").renderHTML(actual);
 

@@ -1,22 +1,21 @@
-import { Chord, ChordedLyrics } from "../lib/types";
+import AnnotatedLyrics from "../lib/AnnotatedLyrics";
+import Chord from "../lib/Chord";
+import { Annotation } from "../lib/types";
 import { matchAll, toLines } from "../lib/util";
 
 /**
  * 
  * @param htmlString This parses very concrete HTML that pisnicky-akordy.cz uses
  */
-function parseHTML(htmlString: string): ChordedLyrics {
+function parseHTML(htmlString: string): AnnotatedLyrics {
     const preRegex = /<pre>((?:.|\s)*)<\/pre>/;
     const lyrics = preRegex.exec(htmlString)?.[1]?.trim() ?? "";
     if (lyrics.length == 0) {
-        return {
-            chords: [],
-            lyrics: []
-        }
+        return new AnnotatedLyrics([], []);
     }
 
     const x = lyrics.replace(/<el.*?>|<\/el>/g, "");
-    const chords: Chord[] = [];
+    const chords: Annotation[] = [];
     const lines: { i: number, line: string }[] = [];
 
     const chordRegex = /<span.+?class="akord".*?>|<\/span>/g;
@@ -29,9 +28,9 @@ function parseHTML(htmlString: string): ChordedLyrics {
                 if (m) {
                     chords.push({
                         // TODO: Comment
-                        y: y + 1,
-                        x: m.index,
-                        chord: ch
+                        lineIndex: y + 1,
+                        letterIndex: m.index,
+                        note: Chord.parse(ch) ?? ch
                     })
 
                     xOffset += ch.length;
@@ -44,23 +43,20 @@ function parseHTML(htmlString: string): ChordedLyrics {
     })
 
 
-    const newChords: Chord[] = []
+    const newAnnotations: Annotation[] = []
     const newLines: string[] = []
 
     lines.forEach(({ i, line }, actualIndex) => {
         newLines.push(line);
-        newChords.push(
-            ...chords.filter(ch => ch.y == i).map(ch => ({
+        newAnnotations.push(
+            ...chords.filter(ch => ch.lineIndex == i).map(ch => ({
                 ...ch,
-                y: actualIndex
+                lineIndex: actualIndex
             }))
         )
     })
 
-    return {
-        chords: newChords,
-        lyrics: newLines
-    }
+    return new AnnotatedLyrics(newLines, newAnnotations);
 }
 
 
