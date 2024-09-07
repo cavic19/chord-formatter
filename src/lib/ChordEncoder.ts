@@ -1,4 +1,5 @@
-import { Chord, ChordedLyrics } from "./types";
+import Chord from "./Chord";
+import { Annotation, AnnotatedLyrics } from "./types";
 import { insertAt, matchAll, toLines, unzip } from "./util";
 
 
@@ -12,39 +13,39 @@ class ChordEncoder {
 
     private delimetersLength = this.leftDelimeter.length + this.rightDelimeter.length
 
-    decode(text: string): ChordedLyrics {
+    decode(text: string): AnnotatedLyrics {
         const { first, second } =  unzip(
             toLines(text).map(it => it.trim()).map((line, index) => {
                 const regex = new RegExp(`${this.escapeRegex(this.leftDelimeter)}(.+?)${this.escapeRegex(this.rightDelimeter)}`, "g");
-                let chords: Chord[] = [];
+                let annotations: Annotation[] = [];
                 let offset = 0;
                 matchAll(regex, line).forEach(match => {
                     if (match[1]) {
-                        chords.push({
-                            x: match.index - offset,
-                            y: index,
-                            chord: match[1]
+                        annotations.push({
+                            letterIndex: match.index - offset,
+                            lineIndex: index,
+                            note: Chord.parse(match[1]) ?? match[1]
                         });
                         offset += match[1].length + this.delimetersLength;
                     } 
                 })
                 const cleansedLine = line.replace(regex, "").trim();
-                return { first: chords, second: cleansedLine };
+                return { first: annotations, second: cleansedLine };
             })
         );
         return {
             lyrics: second,
-            chords: first.flat()
+            annotations: first.flat()
         };
     }
 
 
-    encode({ chords, lyrics }: ChordedLyrics): string {
+    encode({ annotations: chords, lyrics }: AnnotatedLyrics): string {
         return lyrics.map((line, y) => {
             let offset = 0;
-            return chords.filter(ch => ch.y === y).reduce((acc, cur) => {
-                const newLine = insertAt(acc, cur.x + offset, `${this.leftDelimeter}${cur.chord}${this.rightDelimeter}`);
-                offset += cur.chord.length + this.delimetersLength;
+            return chords.filter(ch => ch.lineIndex === y).reduce((acc, cur) => {
+                const newLine = insertAt(acc, cur.letterIndex + offset, `${this.leftDelimeter}${cur.note}${this.rightDelimeter}`);
+                offset += cur.note.toString().length + this.delimetersLength;
                 return newLine;
             }, line);
         }).join("\n");

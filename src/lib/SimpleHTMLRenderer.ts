@@ -1,5 +1,5 @@
 import ChordEncoder from "./ChordEncoder";
-import { ChordedLyrics } from "./types";
+import { AnnotatedLyrics } from "./types";
 import { emptyString } from "./util";
 
 /**
@@ -32,12 +32,12 @@ class SimpleHTMLRenderer {
         return this.renderHTML(this.defaultEncoder.decode(str));
     }
 
-    renderHTML({ lyrics, chords }: ChordedLyrics): string {
+    renderHTML({ lyrics, annotations: chords }: AnnotatedLyrics): string {
         const innerHtml = lyrics.flatMap((line, index) => {
             let offset = 0;
-            const chordsLine = chords.filter(({ y }) => y == index).reduce((acc, cur) => {
-                const output = emptyString(cur.x - offset) + this.createChordElement(cur.chord);
-                offset = cur.x + cur.chord.length;
+            const chordsLine = chords.filter(({ lineIndex: y }) => y == index).reduce((acc, cur) => {
+                const output = emptyString(cur.letterIndex - offset) + this.createChordElement(cur.note.toString());
+                offset = cur.letterIndex + cur.note.toString().length;
                 return acc + output;
             }, "");
     

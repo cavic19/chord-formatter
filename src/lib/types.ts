@@ -1,16 +1,19 @@
-export type Chord = {
+import Chord from "./Chord";
+
+export type Annotation = {
     // Horizontal position of the chord (in letters)
-    x: number
+    letterIndex: number
     // Vertical position of the chords (which line)
-    y: number
+    lineIndex: number
     // The chords like C, G, Am ... 
-    chord: string
+    note: Chord | string
 };
 
 
-export type ChordedLyrics = {
+
+export type AnnotatedLyrics = {
     lyrics: string[]
-    chords: Chord[]
+    annotations: Annotation[]
 };
 
 export type Pair<A, B> = {
