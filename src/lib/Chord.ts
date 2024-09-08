@@ -42,6 +42,9 @@ class Chord {
         if (sections.length == 2) {
             const [chordSection, bassSection] = sections;
             const chord = Chord.parseChord(chordSection);
+            if (!chord) {
+                return undefined;
+            }
             if (Chord.bassRegex.test(bassSection)) {
                 return new Chord(chord.scale, chord.embellishment, bassSection);
             } else {
