@@ -8,6 +8,7 @@ test.skip('should first', () => {
         Bu<[F]>t darling when I <[Dm]>hold you
         Don't you know I feel the <[C]>same
     `;
+    
     const html = new SimpleHTMLRenderer("color:red;").renderHTMLFromString(compact);
 
     fs.writeFileSync(__dirname + '/../../index.html', html);

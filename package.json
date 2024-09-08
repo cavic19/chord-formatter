@@ -1,7 +1,7 @@
 {
-  "name": "hwrld",
+  "name": "chord-formatter",
   "version": "1.0.0",
-  "description": "TODO",
+  "description": "Simple chord formatting tool",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
