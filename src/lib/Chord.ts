@@ -101,10 +101,12 @@ class Chord {
         const flatIndex = Chord.transpostionFlatTable.indexOf(tone);
         if (sharpIndex !== -1) {
             const newSharpIndex = (sharpIndex + steps) % Chord.transpostionSharpTable.length;
-            return Chord.transpostionSharpTable.at(newSharpIndex);
+            // Since we are using the module we can never get over the bounds
+            return Chord.transpostionSharpTable.at(newSharpIndex)!;
         } else if (flatIndex !== -1) {
             const newFlatIndex = (flatIndex + steps) % Chord.transpostionFlatTable.length;
-            return Chord.transpostionFlatTable.at(newFlatIndex);
+            // Since we are using the module we can never get over the bounds
+            return Chord.transpostionFlatTable.at(newFlatIndex)!;
         } else {
             throw Error("");
         }
