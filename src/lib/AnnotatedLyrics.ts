@@ -9,6 +9,13 @@ class AnnotatedLyrics {
         
     }
 
+    removeChords(): AnnotatedLyrics {
+        return new AnnotatedLyrics(
+            this.lyrics,
+            this.annotations.filter(a => !(a.note instanceof Chord))
+        )
+    }
+
     transposeChords(steps: number): AnnotatedLyrics {
         return new AnnotatedLyrics(
             this.lyrics,
