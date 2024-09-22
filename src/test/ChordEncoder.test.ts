@@ -15,7 +15,7 @@ Don't you know I feel the <[C]>same`;
         expect(actualReEncoded).toEqual(encoded);
     });
 
-    it("should parse as expected", () => {
+    it("should decode as expected", () => {
         const expected: AnnotatedLyrics = new AnnotatedLyrics(
             [
                 "When I look into your eyes",

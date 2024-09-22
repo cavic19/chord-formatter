@@ -49,3 +49,26 @@ export function insertAt(string: string, index: number, textToInsert: string): s
     }
     return string.slice(0, index) + textToInsert + string.slice(index);
 }
+
+
+export function splitStringAtWordBoundary(input: string, maxLength: number): [string, string | undefined] {
+    // If the input length is already less than or equal to maxLength, return the whole string as the first part
+    if (input.length <= maxLength) {
+        return [input, undefined];
+    }
+
+    // Find the last word boundary before or at the maxLength position
+    const substring = input.slice(0, maxLength + 1); // +1 to ensure we include the maxLength character
+    const lastSpaceIndex = substring.lastIndexOf(' ');
+
+    // If there's no space, return the whole string in one part (no word boundaries)
+    if (lastSpaceIndex === -1) {
+        return [input, undefined];
+    }
+
+    // Split the string at the last space
+    const firstPart = input.slice(0, lastSpaceIndex).trim();
+    const secondPart = input.slice(lastSpaceIndex + 1).trim();
+
+    return [firstPart, secondPart];
+}
